@@ -1,0 +1,44 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
+<!--headerFragment 선언-->
+<div th:fragment="headerFragment">
+<!--    헤더에 사용할 부분-->
+<div class="header">
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">로고</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">앨범등록</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">자유게시판</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            추가기능
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">기능1</a></li>
+                            <li><a class="dropdown-item" href="#">기능2</a></li>
+                            <li><a class="dropdown-item" href="#">기능3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        </nav>
+<!--    </div>-->
+</div>
+</div>
+
+</html>
