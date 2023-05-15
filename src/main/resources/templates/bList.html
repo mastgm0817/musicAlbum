@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<div layout:fragment="content">
+    <h1>게시판</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>사진</th>
+            <th>소리</th>
+            <th>작성일</th>
+            <th>기능</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+            <td th:text="${board.Id}"></td>
+            <td th:text="${board.bTitle}">
+                <a th:href="@{/boards/__${board.id}__}">
+                    <span th:text="${board.bTitle}"></span>
+                </a>
+            </td>
+            <td th:text="${board.bImage}"></td>
+            <td th:text="${board.bSound}"></td>
+            <td th:text="${board.createdAt}"></td>
+            <td>
+                <!-- 수정 및 삭제 기능 구현을 위해 링크 생성 -->
+                <!--            <a th:href="@{/diaries/__${diary.id}__/edit}">Edit</a>-->
+                <a th:href="@{/__${board.Id}__/}">Edit</a>
+                <a th:href="@{/__${board.Id}__/delete}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="button" onclick="location.href='/bAdd'">글 작성</button>
+    <p>content</p>
+</div>
+</html>
