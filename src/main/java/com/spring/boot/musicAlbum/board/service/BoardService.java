@@ -101,4 +101,8 @@ public class BoardService {
         }
         return boardRepository.save(boardDTO);
     }
+
+    public void deleteBoard(Long id) {
+        boardRepository.deleteById(id);
+    }
 }

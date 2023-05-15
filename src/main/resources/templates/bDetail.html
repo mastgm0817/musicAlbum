@@ -11,6 +11,7 @@
 <div layout:fragment="content">
     <!--  여기에다가 추가하면 됨 -->
     <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
+    <form method="post" th:action="@{/bUpdate/__${board.Id}__}" enctype="multipart/form-data">
     <h1 th:text="${board.bTitle}">Board Detail</h1>
     <table>
         <tr>
@@ -44,8 +45,10 @@
             <td th:text="${board.createdAt}"></td>
         </tr>
     </table>
+    <button type="submit">Edit</button>
     <button type="button" onclick="location.href='/bList'">Home</button>
-    <button type="button" onclick="location.href='/bUpdate'">Edit</button>
+    </form>
+
 </div>
 
 </html>

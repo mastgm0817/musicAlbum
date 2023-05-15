@@ -41,7 +41,7 @@
             <td th:text="${board.Id}"></td>
             <td>
 <!--                <a th:href="@{/__${board.Id}__/delete}">Delete</a>-->
-                <a th:text="${board.bTitle}" th:href="@{/bList/__${board.id}__}">
+                <a th:text="${board.bTitle}" th:href="@{/bDetail/__${board.id}__}">
                     <span th:text="${board.bTitle}"></span>
                 </a>
             </td>
@@ -52,7 +52,7 @@
                 <!-- 수정 및 삭제 기능 구현을 위해 링크 생성 -->
                 <!--            <a th:href="@{/diaries/__${diary.id}__/edit}">Edit</a>-->
 <!--                <a th:href="@{/__${board.Id}__/}">Edit</a>-->
-                <a th:href="@{/__${board.Id}__/delete}">Delete</a>
+                <a th:href="@{/delete/__${board.Id}__}">Delete</a>
             </td>
         </tr>
         </tbody>
