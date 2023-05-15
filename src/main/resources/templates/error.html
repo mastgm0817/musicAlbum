@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+
+
+<div layout:fragment="content">
+    <!-- error.html 을 지정해놓으면 '링크가 없는 경우' 다 이쪽으로 기본 이동 -->
+    <h2>Error</h2>
+    <div>
+        <p th:text="${msg}"></p> <!-- model/redirect attribute로 msg -->
+        <!-- 404로 왔을 때는 바로 error.html -->
+        <p th:if="${msg == null}">없는 페이지입니다</p>
+    </div>
+    <br>
+    <button onclick="location.href = '/'">메인으로 가기</button>
+</div>
+
+</html>
