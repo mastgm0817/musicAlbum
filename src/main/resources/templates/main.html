@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
+      layout:decorate="~{layout/default_layout}">
+
+<div layout:fragment="content">
+    <h2>Main</h2>
+    <div>
+        <h3>유저 정보</h3>
+        <p th:text="${#authentication}"></p>
+        <p th:text="${#authentication.principal.username}"></p>
+        <p th:text="${#authentication.authorities.![authority].get(0)}"></p>
+    </div>
+    <div th:with="role = ${#authentication.authorities.![authority].get(0)}">
+        <!--    <p th:text="${role}"></p>-->
+        <!--    <div th:if="${#authentication.authorities.![authority].get(0) == 'ROLE_free'}">-->
+        <div th:if="${role == 'ROLE_normal'}">
+            <p>일반 회원입니다! 베이직 영화를 시청 가능합니다!</p>
+            <button type="button" onclick="location.href = '/normal'">Basic</button>
+        </div>
+        <div th:if="${role == 'ROLE_admin'}">
+            <p>관리자 회원입니다! 모든 영화를 시청 가능합니다!</p>
+            <button type="button" onclick="location.href = '/normal'">Basic</button>
+            <button type="button" onclick="location.href = '/admin'">Gold</button>
+        </div>
+    </div>
+    <br>
+    <form th:action="@{/logout}" method="post">
+        <button>로그아웃</button>
+    </form>
+</div>
+</html>
