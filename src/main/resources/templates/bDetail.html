@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.bTitle}">Board Detail</title>
+</head>
+
+<div layout:fragment="content">
+    <!--  여기에다가 추가하면 됨 -->
+    <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
+    <form method="post" th:action="@{/bUpdate/__${board.Id}__}" enctype="multipart/form-data">
+    <h1 th:text="${board.bTitle}">Board Detail</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <td th:text="${board.Id}"></td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td th:text="${board.bTitle}"></td>
+        </tr>
+        <tr>
+            <th>Content</th>
+            <td th:text="${board.bContent}"></td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <!-- 이미지 파일은 별도의 URL 경로로 출력한다. -->
+            <td><img height="200px" th:src="@{'/upload/'+${board.bImage}}" width="200px"/></td>
+        </tr>
+        <tr>
+            <th>Sound</th>
+            <!-- 사운드 파일은 별도의 URL 경로로 출력한다. -->
+            <td>
+                <audio controls="controls" th:src="@{'/upload/'+${board.bSound}}">
+                    Your browser does not support the audio element.
+                </audio>
+            </td>
+        </tr>
+        <tr>
+            <th>Created At</th>
+            <td th:text="${board.createdAt}"></td>
+        </tr>
+    </table>
+    <button type="submit">Edit</button>
+    <button type="button" onclick="location.href='/bList'">Home</button>
+    </form>
+
+</div>
+
+</html>
