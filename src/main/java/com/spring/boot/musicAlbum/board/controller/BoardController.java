@@ -25,7 +25,7 @@ public class BoardController {
             return "redirect:/";
         }
         model.addAttribute("board", board);
-        return "bListDetail";
+        return "bDetail";
     }
 
     @GetMapping("/bList")
@@ -35,7 +35,17 @@ public class BoardController {
         return "bList";
     }
 
-    @PostMapping("/bList/{id}")
+    @GetMapping("/bUpdate/{id}")
+    public String updateBoard(@PathVariable Long id, Model model) {
+        BoardDTO board = boardService.getBoard(id);
+        if (board == null) {
+            return "redirect:/";
+        }
+        model.addAttribute("board", board);
+        return "bDetail";
+    }
+
+    @PostMapping("/bUpdate/{id}")
     public String DetailBoard(@PathVariable Long id,
                               @ModelAttribute("board") BoardDTO newBoard,
                               @RequestParam("imageFile") MultipartFile imageFile,
@@ -49,13 +59,14 @@ public class BoardController {
             Board.setCreatedAt(newBoard.getCreatedAt());
             boardService.updateBoard(id, Board, imageFile, soundFile);
         }
-        return "redirect:/";
+        return "redirect:/bList";
     }
 
     @GetMapping("/bAdd")
     public String addBoard() {
         return "bAdd";
     }
+
 
     @PostMapping("/bList")
     public String createBoard(
