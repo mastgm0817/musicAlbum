@@ -9,22 +9,23 @@
     <!--  여기에다가 추가하면 됨 -->
     <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
     <h2>Create a new Board</h2>
-    <form th:action="@{/bList}" method="post" enctype="multipart/form-data">
+<!--    <form th:object="${board}" th:action="@{/bAdd}" method="post" enctype="multipart/form-data">-->
+    <form th:object="${board}" th:action="@{/bAdd}" method="post" enctype="multipart/form-data">
         <div>
             <label for="bTitle">Title:</label>
-            <input type="text" id="bTitle" name="bTitle">
+            <input type="text" id="bTitle" name="bTitle" th:field="*{bTitle}">
         </div>
         <div>
             <label for="bContent">Content:</label>
-            <textarea id="bContent" name="bContent"></textarea>
+            <textarea id="bContent" name="bContent" th:field="*{bContent}"></textarea>
         </div>
         <div>
-            <label for="bImage">Image:</label>
-            <input type="file" id="bImage" name="imageFile"> <!-- RequestParam과 대응 되게 -->
+            <label for="imageFile">Image:</label>
+            <input type="file" id="imageFile" name="imageFile"> <!-- RequestParam과 대응 되게 -->
         </div>
         <div>
-            <label for="bSound">Sound:</label>
-            <input type="file" id="bSound" name="soundFile"> <!-- RequestParam과 대응 되게 -->
+            <label for="soundFile">Sound:</label>
+            <input type="file" id="soundFile" name="soundFile"> <!-- RequestParam과 대응 되게 -->
         </div>
         <button type="submit">Create</button>
         <button type="button" onclick="location.href='/bList'">Home</button>

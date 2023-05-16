@@ -1,0 +1,47 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
+<!--headerFragment 선언-->
+<div th:fragment="profileFragment">
+<style>
+.circular-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.circular-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
+<div>
+<h1>Profile</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Image</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 모든 다이어리를 조회하여 테이블 형태로 출력한다. -->
+    <tr th:each="ac1 : ${account}">
+        <td th:text="${ac1.id}"></td>
+        <td th:text="${ac1.username}"></td>
+        <td>
+            <div class="circular-image">
+                <img th:if="${ac1.image != null}" th:src="@{'/upload/image/' + ${ac1.image}}" >
+                <span th:if="${ac1.image == null}">-</span>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</div>
+</div>
+</html>

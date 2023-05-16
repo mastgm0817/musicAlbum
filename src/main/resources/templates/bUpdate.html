@@ -9,14 +9,15 @@
     <!--  여기에다가 추가하면 됨 -->
     <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
     <h2>Edit the board</h2>
-    <form th:action="@{/bList}" method="post" enctype="multipart/form-data">
+    <form th:object="${board}" th:action="@{/edit}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="id" th:value="${board.id}">
         <div>
             <label for="bTitle">Title:</label>
-            <input type="text" id="bTitle" name="bTitle">
+            <input type="text" id="bTitle" name="bTitle" th:value="${board.bTitle}">
         </div>
         <div>
             <label for="bContent">Content:</label>
-            <textarea id="bContent" name="bContent"></textarea>
+            <textarea id="bContent" name="bContent" th:text="${board.bContent}"></textarea>
         </div>
         <div>
             <label for="bImage">Image:</label>
@@ -27,26 +28,8 @@
             <input type="file" id="bSound" th:value="${board.bSound}" name="soundFile"> <!-- RequestParam과 대응 되게 -->
         </div>
         <button type="submit">Save</button>
-<!--        <div>-->
-<!--            <label for="bTitle">Title:</label>-->
-<!--            <input id="bTitle" name="bTitle" th:value="${board.bTitle}" type="text">-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="content">Content:</label>-->
-<!--            <textarea id="content" name="content" th:text="${board.bContent}"></textarea>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="image">Image:</label>-->
-<!--            <input id="image" name="imageFile" type="file">-->
-<!--        </div>-->
-<!--        <div>-->
-<!--            <label for="sound">Sound:</label>-->
-<!--            <input id="sound" name="soundFile" th:value="${board.bSound}" type="file">-->
-<!--        </div>-->
-<!--        <button type="submit">Save</button>-->
     </form>
     <a href="/bList">Back to Board List</a>
-    <p>content</p>
 </div>
 
 </html>

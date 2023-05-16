@@ -38,26 +38,30 @@
         </thead>
         <tbody>
         <tr th:each="board : ${boards}">
-            <td th:text="${board.Id}"></td>
+            <td th:text="${board.id}"></td>
             <td>
 <!--                <a th:href="@{/__${board.Id}__/delete}">Delete</a>-->
                 <a th:text="${board.bTitle}" th:href="@{/bDetail/__${board.id}__}">
                     <span th:text="${board.bTitle}"></span>
                 </a>
             </td>
-            <td th:text="${board.bImage}"></td>
-            <td th:text="${board.bSound}"></td>
+            <td>
+                <img th:if="${board.bImage != null}" th:src="@{'/upload/' + ${board.bImage}}" class="img-fluid" alt="" width="50px">
+                <span th:if="${board.bImage == null}">-</span>
+            </td>
+            <td>
+                <audio th:if="${board.bSound != null}" th:src="@{'/upload/' + ${board.bSound}}" controls></audio>
+                <span th:if="${board.bSound == null}">-</span>
+            </td>
             <td th:text="${board.createdAt}"></td>
             <td>
-                <!-- 수정 및 삭제 기능 구현을 위해 링크 생성 -->
-                <!--            <a th:href="@{/diaries/__${diary.id}__/edit}">Edit</a>-->
-<!--                <a th:href="@{/__${board.Id}__/}">Edit</a>-->
-                <a th:href="@{/delete/__${board.Id}__}">Delete</a>
+                <a th:href="@{/bUpdate/{id}(id=${board.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/delete/{id}(id=${board.id})}" class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
     <button type="button" onclick="location.href='/bAdd'">글 작성</button>
-    <p>content</p>
+    <p th:text="${msg}"></p>
 </div>
 </html>

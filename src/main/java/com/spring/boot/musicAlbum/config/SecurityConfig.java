@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll() // 로그인 페이지는 모든 사용자에게 허용
                 .antMatchers("/join").permitAll() // 가입 페이지는 모든 사용자에게 허용
+//                .antMatchers("/bList").permitAll() // 가입 페이지는 모든 사용자에게 허용
                 .antMatchers("/normal").hasAnyRole("normal", "admin") // 이것들 중에 특정한 권한이 있다면 접속 허용
                 .antMatchers("/main").hasAnyRole("normal", "admin") // 이것들 중에 특정한 권한이 있다면 접속 허용
                 .antMatchers("/admin").hasRole("admin") // 1개의 권한만 허용

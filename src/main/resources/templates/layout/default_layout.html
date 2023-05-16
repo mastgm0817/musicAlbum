@@ -20,7 +20,8 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-1"><!--        nav fragment 사용-->
+        <div sec:authorize="isAuthenticated()" class="col-1"><!--        nav fragment 사용-->
+            <th:block layout:fragment="profile"></th:block>
         </div>
         <div class="col-10 content_container"> <!--        content fragment 사용-->
             <th:block layout:fragment="content"></th:block>
