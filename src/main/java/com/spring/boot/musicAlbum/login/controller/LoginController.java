@@ -6,6 +6,8 @@ import com.spring.boot.musicAlbum.login.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import software.amazon.awssdk.services.s3.S3Client;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping
@@ -31,14 +35,20 @@ public class LoginController {
     }
 
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            String username = authentication.getName();
+            Account account = accountService.findUserByUsername(username);
+            model.addAttribute("account", account);
+        }
         return "main";
     }
 
-    @GetMapping("/main")
-    public String main() {
-        return "main";
-    }
+//    @GetMapping("/main")
+//    public String main() {
+//        return "main";
+//    }
 
     @GetMapping("/login")
     public String showLoginPage() {
@@ -92,13 +102,6 @@ public class LoginController {
     public ResponseEntity<?> upload(@PathVariable String filename) throws IOException {
         byte[] byteArray = accountService.loadFile(filename);
         return new ResponseEntity<>(byteArray, HttpStatus.OK);
-    }
-
-    @GetMapping("/profile")
-    public String getAllAccounts(Model model) {
-        List<Account> accounts =  accountService.getAllAccounts();
-        model.addAttribute("account", accounts);
-        return "profile";
     }
 
 }

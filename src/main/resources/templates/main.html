@@ -6,32 +6,50 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
       layout:decorate="~{layout/default_layout}">
 
+<div layout:fragment="profile">
+
+    <div class="card" style="width: 18rem;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${#authentication.principal.username}">님! 환영합니다.</h5>
+            <div th:with="role = ${#authentication.authorities.![authority].get(0)}">
+                <div th:if="${role == 'ROLE_normal'}">
+                    <p class="card-text">일반회원 </p>
+                </div>
+                <div th:if="${role == 'ROLE_admin'}">
+                    <p class="card-text">관리자 </p>
+                </div>
+            </div>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">An item</li>
+        </ul>
+            <div class="card-body">
+                <a href="#" class="btn btn-primary">프로필 수정</a>
+                <a href="/logout" class="btn btn-primary">로그아웃</a>
+            </div>
+    </div>
+
+<!--    <div th:with="role = ${#authentication.authorities.![authority].get(0)}">-->
+<!--        <div th:if="${role == 'ROLE_normal'}">-->
+<!--            <div>-->
+<!--                <p><img src="imgs/tier.png" alt="일반회원">&nbsp;일반 회원</p>-->
+<!--            </div>-->
+<!--            &lt;!&ndash;            <button type="button" onclick="location.href = '/normal'">Basic</button>&ndash;&gt;-->
+<!--        </div>-->
+<!--        <div th:if="${role == 'ROLE_admin'}">-->
+<!--            <p>관리자 회원입니다! 모든 영화를 시청 가능합니다!</p>-->
+<!--            <button type="button" onclick="location.href = '/normal'">Basic</button>-->
+<!--            <button type="button" onclick="location.href = '/admin'">Gold</button>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="d-flex justify-content-center">-->
+<!--        <form th:action="@{/logout}" method="post">-->
+<!--            <button class="btn btn-primary btn-sm">로그아웃</button>-->
+<!--        </form>-->
+<!--    </div>-->
+</div>
 <div layout:fragment="content">
     <h2>Main</h2>
-    <div>
-        <h3>유저 정보</h3>
-        <p th:text="${#authentication}"></p>
-        <p th:text="${#authentication.principal.username}"></p>
-        <p th:text="${#authentication.authorities.![authority].get(0)}"></p>
-    </div>
-    <div th:with="role = ${#authentication.authorities.![authority].get(0)}">
-        <!--    <p th:text="${role}"></p>-->
-        <!--    <div th:if="${#authentication.authorities.![authority].get(0) == 'ROLE_free'}">-->
-        <div th:if="${role == 'ROLE_normal'}">
-            <p>일반 회원입니다! 베이직 영화를 시청 가능합니다!</p>
-            <button type="button" onclick="location.href = '/normal'">Basic</button>
-        </div>
-        <div th:if="${role == 'ROLE_admin'}">
-            <p>관리자 회원입니다! 모든 영화를 시청 가능합니다!</p>
-            <button type="button" onclick="location.href = '/normal'">Basic</button>
-            <button type="button" onclick="location.href = '/admin'">Gold</button>
-        </div>
-    </div>
-    <br>
-    <button onclick="location.href='/profile'">프로필</button>
-    <form th:action="@{/logout}" method="post">
-        <button>로그아웃</button>
-    </form>
-
 </div>
 </html>

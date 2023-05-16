@@ -65,5 +65,9 @@ public class AccountService {
         return accountRepository.findAll();
     }
 
+    public Account getAccountById(Long id) {
+        return accountRepository.findAccountById(id);
+    }
+
 
 }

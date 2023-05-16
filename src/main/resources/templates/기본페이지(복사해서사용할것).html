@@ -4,7 +4,31 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout}">
 
-
+<div layout:fragment="profile">
+    <div class="circular-image">
+        <img th:if="${account.image != null}" th:src="@{'/upload/image/' + ${account.image}}" >
+        <span th:if="${account.image == null}">-</span>
+    </div>
+    <div>
+        <h3 th:text="${#authentication.principal.username}"></h3>
+    </div>
+    <div th:with="role = ${#authentication.authorities.![authority].get(0)}">
+        <div th:if="${role == 'ROLE_normal'}">
+            <p>일반 회원입니다! 베이직 영화를 시청 가능합니다!</p>
+            <button type="button" onclick="location.href = '/normal'">Basic</button>
+        </div>
+        <div th:if="${role == 'ROLE_admin'}">
+            <p>관리자 회원입니다! 모든 영화를 시청 가능합니다!</p>
+            <button type="button" onclick="location.href = '/normal'">Basic</button>
+            <button type="button" onclick="location.href = '/admin'">Gold</button>
+        </div>
+    </div>
+    <br>
+    <button onclick="location.href='/profile'">프로필</button>
+    <form th:action="@{/logout}" method="post">
+        <button>로그아웃</button>
+    </form>
+</div>
 <div layout:fragment="content">
 <!--  여기에다가 추가하면 됨 -->
 <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
