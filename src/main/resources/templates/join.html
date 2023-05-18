@@ -2,36 +2,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/main_layout}">
+      layout:decorate="~{layout/default_layout}">
 
 
 <div layout:fragment="content">
-    <div class="container">
+    <div class="container" style="height: 800px;">
         <div class="row">
             <div class="col-md-4 offset-md-4">
                 <h2>Join</h2>
                 <form th:action="@{/join}" th:object="${account}" method="post" enctype="multipart/form-data">
-                    <div>
-                        <label for="username">User ID:</label>
-                        <input type="text" id="username" name="username" required>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">User ID:</label>
+                        <input type="text" id="username" name="username" class="form-control" required>
                     </div>
-                    <div>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password" required>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
                     </div>
-                    <div>
-                        <label for="role">Role:</label>
-                        <select id="role" name="role">
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role:</label>
+                        <select id="role" name="role" class="form-select">
                             <option value="normal">normal</option>
                             <option value="admin">admin</option>
                         </select>
                     </div>
-                    <div>
-                        <label for="imageFile">프로필 사진:</label>
-                        <input type="file" id="imageFile" name="imageFile"> <!-- RequestParam과 대응 되게 -->
+                    <div class="mb-3">
+                        <label for="imageFile" class="form-label">프로필 사진:</label>
+                        <input type="file" id="imageFile" name="imageFile" class="form-control">
                     </div>
-                    <div>
-                        <input type="submit" value="Join">
+                    <div class="mb-3">
+                        <input type="submit" value="Join" class="btn btn-primary btn-lg">
                     </div>
                 </form>
             </div>

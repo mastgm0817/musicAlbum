@@ -6,31 +6,39 @@
 
 
 <div layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <h2>Create a new Board</h2>
+                <form th:object="${board}" th:action="@{/bAdd}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <input type="hidden" id="bUserID" name="bUserID" th:field="*{bUserID}">
+                    <div class="mb-3">
+                        <label for="bTitle" class="form-label">Title:</label>
+                        <input type="text" id="bTitle" name="bTitle" th:field="*{bTitle}" class="form-control" required>
+                        <div class="invalid-feedback">Please enter a title.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="bContent" class="form-label">Content:</label>
+                        <textarea id="bContent" name="bContent" th:field="*{bContent}" class="form-control" required></textarea>
+                        <div class="invalid-feedback">Please enter the content.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="imageFile" class="form-label">Image:</label>
+                        <input type="file" id="imageFile" name="imageFile" class="form-control" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                        <label for="soundFile" class="form-label">Sound:</label>
+                        <input type="file" id="soundFile" name="soundFile" class="form-control" accept="audio/*">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" onclick="location.href='/bList'" class="btn btn-secondary">Home</button>
+                </form>
+            </div>
+        </div>
+    </div>
     <!--  여기에다가 추가하면 됨 -->
     <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
-    <h2>Create a new Board</h2>
-<!--    <form th:object="${board}" th:action="@{/bAdd}" method="post" enctype="multipart/form-data">-->
-    <form th:object="${board}" th:action="@{/bAdd}" method="post" enctype="multipart/form-data">
-        <div>
-            <label for="bTitle">Title:</label>
-            <input type="text" id="bTitle" name="bTitle" th:field="*{bTitle}">
-        </div>
-        <div>
-            <label for="bContent">Content:</label>
-            <textarea id="bContent" name="bContent" th:field="*{bContent}"></textarea>
-        </div>
-        <div>
-            <label for="imageFile">Image:</label>
-            <input type="file" id="imageFile" name="imageFile"> <!-- RequestParam과 대응 되게 -->
-        </div>
-        <div>
-            <label for="soundFile">Sound:</label>
-            <input type="file" id="soundFile" name="soundFile"> <!-- RequestParam과 대응 되게 -->
-        </div>
-        <button type="submit">Create</button>
-        <button type="button" onclick="location.href='/bList'">Home</button>
-    </form>
-    <p>content</p>
+
 </div>
 
 </html>

@@ -2,9 +2,20 @@ package com.spring.boot.musicAlbum.board.controller;
 
 import com.spring.boot.musicAlbum.board.model.BoardDTO;
 import com.spring.boot.musicAlbum.board.service.BoardService;
+import com.spring.boot.musicAlbum.comment.model.Comment;
+import com.spring.boot.musicAlbum.comment.service.CommentService;
+import com.spring.boot.musicAlbum.login.model.Account;
+import com.spring.boot.musicAlbum.login.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +33,26 @@ public class BoardController {
     private BoardService boardService;
 
     @Autowired
+    private CommentService commentService;
+
+    @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private S3Client s3Client; // @Bean
 
     @GetMapping("/bAdd")
     public String addBoard(Model model) {
-        model.addAttribute("board", new BoardDTO());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        BoardDTO board = new BoardDTO();
+        if (authentication != null) {
+            String username = authentication.getName();
+            board.setBUserID(username);
+            model.addAttribute("board", board);
+        }
         return "bAdd";
     }
+
 
     @PostMapping("/bAdd")
     public String add(@ModelAttribute BoardDTO board,
@@ -42,30 +66,27 @@ public class BoardController {
 
 
     @GetMapping("/bList")
-    public String getAllbList(Model model) {
-        model.addAttribute("boards", boardService.getAllBoards());
+    public String getAllbList(@RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        int pageSize = 5; // 페이지당 게시물 수
+        Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("createdAt").descending());
+        Page<BoardDTO> boardPage = boardService.getAllBoards(pageable);
+        List<BoardDTO> boards = boardPage.getContent();
+        model.addAttribute("boards", boards);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", boardPage.getTotalPages());
         return "bList";
     }
 
 
-    @GetMapping("/bDetail/{id}")
-    public String getBoard(@PathVariable Long id, Model model) {
-        BoardDTO board = boardService.getBoardById(id);
-        if (board == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("board", board);
-        return "bDetail";
-    }
 
-    @PostMapping("/bDetail/{id}")
-    public String DetailBoard(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
-        BoardDTO board = boardService.getBoardById(id);
-        if (board == null) {
-            return "redirect:/bList";
-        }
-        redirectAttributes.addFlashAttribute("board", board);
-        return "redirect:/bUpdate";
+    @GetMapping("/bDetail/{id}")
+    public String getBoardDetail(@PathVariable Long id, Model model) {
+        BoardDTO boardDTO = boardService.getBoardById(id);
+        List<Comment> comments = commentService.getCommentsByBoardId(id);
+        model.addAttribute("board", boardDTO);
+        model.addAttribute("comment", new Comment());
+        model.addAttribute("comments", comments);
+        return "bDetail";
     }
 
     @GetMapping("/bUpdate/{id}")
@@ -98,6 +119,7 @@ public class BoardController {
             if (board.getBImage() != null) {
                 boardService.deleteFileFromR2(board.getBImage());
             }
+
             if (board.getBSound() != null) {
                 boardService.deleteFileFromR2(board.getBSound());
             }
@@ -112,5 +134,4 @@ public class BoardController {
         byte[] byteArray = boardService.loadFile(filename);
         return new ResponseEntity<>(byteArray, HttpStatus.OK);
     }
-
 }

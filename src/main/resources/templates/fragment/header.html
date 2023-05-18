@@ -10,36 +10,38 @@
 
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">로고</a>
+            <a class="navbar-brand" href="/index">
+                <img src="imgs/logo.png" class="logo-image">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">앨범등록</a>
+                        <a class="nav-link active" aria-current="page" href="/index">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/bList">자유게시판</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            추가기능
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">기능1</a></li>
-                            <li><a class="dropdown-item" href="#">기능2</a></li>
-                            <li><a class="dropdown-item" href="#">기능3</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/join">회원가입</a>
                     </li>
                 </ul>
             </div>
+            <div sec:authorize="isAuthenticated()">
+                <form id="profileForm" th:action="@{/logout}" method="post">
+                    <button class="btn btn-primary">로그아웃</button>
+                </form>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <form th:action="@{/home}" method="post">
+                    <button type="submit" class="btn btn-primary">로그인</button>
+                </form>
+            </div>
+
         </div>
         </nav>
-<!--    </div>-->
 </div>
 </div>
 

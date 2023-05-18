@@ -34,6 +34,11 @@ public class LoginController {
         return "redirect:/home";
     }
 
+    @GetMapping("/index")
+    public String indexPage() {
+        return "index";
+    }
+
     @GetMapping("/home")
     public String home(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

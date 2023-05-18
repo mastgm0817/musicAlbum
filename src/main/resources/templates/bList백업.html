@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/main_layout}">
+<head>
+</script>
+</head>
+<div layout:fragment="content">
+    <h1>게시판</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th>작성자</th>
+            <th>제목</th>
+            <th>사진</th>
+            <th>소리</th>
+            <th>작성일</th>
+            <th>기능</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="board : ${boards}">
+            <td th:text="${board.BId}"></td>
+            <td th:text="${board.bUserID}"></td>
+            <td>
+                <a th:href="@{/bDetail/{id}(id=${board.BId})}">
+                    <span th:text="${board.bTitle}"></span>
+                </a>
+            </td>
+            <td>
+                <img th:if="${board.bImage != null}" th:src="@{'/upload/' + ${board.bImage}}" class="img-fluid" alt="" width="50px">
+                <span th:if="${board.bImage == null}">-</span>
+            </td>
+            <td>
+                <audio th:if="${board.bSound != null}" th:src="@{'/upload/' + ${board.bSound}}" controls></audio>
+                <span th:if="${board.bSound == null}">-</span>
+            </td>
+            <td th:text="${board.createdAt}"></td>
+            <td>
+                <a th:href="@{/bUpdate/{id}(id=${board.BId})}" class="btn btn-primary btn-sm">Edit</a>
+                <a th:href="@{/delete/{id}(id=${board.BId})}" class="btn btn-danger btn-sm">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button type="button" onclick="location.href='/bAdd'">글 작성</button>
+    <h2 th:text="${msg}"></h2>
+</div>
+
+</html>

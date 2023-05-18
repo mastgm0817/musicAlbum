@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security5"
-      layout:decorate="~{layout/default_layout}">
+      layout:decorate="~{layout/profile_layout}">
 <div layout:fragment="profile">
 
     <div class="card" style="width: 18rem;">
@@ -29,7 +29,6 @@
         <ul class="list-group list-group-flush">
             <li class="list-group-item">An item</li>
         </ul>
-        <form id="profileForm" th:action="@{/logout}" method="post"></form>
             <div class="card-body">
                 <form th:action="@{/logout}" method="post">
                     <a href="#" class="btn btn-primary">프로필 수정</a>
@@ -37,24 +36,6 @@
                 </form>
             </div>
     </div>
-<!--    <div th:with="role = ${#authentication.authorities.![authority].get(0)}">-->
-<!--        <div th:if="${role == 'ROLE_normal'}">-->
-<!--            <div>-->
-<!--                <p><img src="imgs/tier.png" alt="일반회원">&nbsp;일반 회원</p>-->
-<!--            </div>-->
-<!--            &lt;!&ndash;            <button type="button" onclick="location.href = '/normal'">Basic</button>&ndash;&gt;-->
-<!--        </div>-->
-<!--        <div th:if="${role == 'ROLE_admin'}">-->
-<!--            <p>관리자 회원입니다! 모든 영화를 시청 가능합니다!</p>-->
-<!--            <button type="button" onclick="location.href = '/normal'">Basic</button>-->
-<!--            <button type="button" onclick="location.href = '/admin'">Gold</button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--    <div class="d-flex justify-content-center">-->
-<!--        <form th:action="@{/logout}" method="post">-->
-<!--            <button class="btn btn-primary btn-sm">로그아웃</button>-->
-<!--        </form>-->
-<!--    </div>-->
 </div>
 <div layout:fragment="content">
     <h2>Main</h2>

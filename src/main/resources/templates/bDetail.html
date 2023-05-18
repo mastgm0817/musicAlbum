@@ -3,50 +3,92 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main_layout}">
-<head>
-    <meta charset="UTF-8">
-    <title th:text="${board.bTitle}">Board Detail</title>
-</head>
 
 <div layout:fragment="content">
-    <!--  여기에다가 추가하면 됨 -->
-    <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
-    <h1 th:text="${board.bTitle}">Board Detail</h1>
-    <table>
-        <tr>
-            <th>ID</th>
-            <td th:text="${board.Id}"></td>
-        </tr>
-        <tr>
-            <th>Title</th>
-            <td th:text="${board.bTitle}"></td>
-        </tr>
-        <tr>
-            <th>Content</th>
-            <td th:text="${board.bContent}"></td>
-        </tr>
-        <tr>
-            <th>Image</th>
-            <!-- 이미지 파일은 별도의 URL 경로로 출력한다. -->
-            <td><img height="200px" th:src="@{'/upload/'+${board.bImage}}" width="200px"/></td>
-        </tr>
-        <tr>
-            <th>Sound</th>
-            <!-- 사운드 파일은 별도의 URL 경로로 출력한다. -->
-            <td>
-                <audio controls="controls" th:src="@{'/upload/'+${board.bSound}}">
-                    Your browser does not support the audio element.
-                </audio>
-            </td>
-        </tr>
-        <tr>
-            <th>Created At</th>
-            <td th:text="${board.createdAt}"></td>
-        </tr>
-    </table>
-    <a th:href="@{/bUpdate/{id}(id=${board.id})}" class="btn btn-primary btn-sm">Edit</a>
-    <button type="button" onclick="location.href='/bList'">Home</button>
-    </form>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 th:text="${msg}" class="alert alert-success"></h1>
+
+                <h1 th:text="${board.bTitle}">Board Detail</h1>
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <td th:text="${board.BId}"></td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td th:text="${board.bUserID}"></td>
+                    </tr>
+                    <tr>
+                        <th>Title</th>
+                        <td th:text="${board.bTitle}"></td>
+                    </tr>
+                    <tr>
+                        <th>Content</th>
+                        <td th:text="${board.bContent}"></td>
+                    </tr>
+                    <tr>
+                        <th>Image</th>
+                        <td>
+                            <img height="200px" th:src="@{'/upload/' + ${board.bImage}}" width="200px" class="img-fluid"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Sound</th>
+                        <td>
+                            <audio controls="controls" th:src="@{'/upload/' + ${board.bSound}}">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Created At</th>
+                        <td th:text="${board.createdAt}"></td>
+                    </tr>
+                </table>
+
+                <!-- 댓글 작성 폼 -->
+                <form th:object="${comment}" th:action="@{/bDetail/{id}/comments(id=${board.BId})}" method="post">
+                    <div class="input-group mb-3">
+<!--                        <input type="hidden" name="cContent" th:field="*{cContent}" class="form-control" placeholder="댓글을 입력하세요" />-->
+                        <input type="text" name="cContent" th:field="*{cContent}" class="form-control" placeholder="댓글을 입력하세요" />
+                        <button type="submit" class="btn btn-primary">댓글 작성</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8">
+                <h2>댓글 목록</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>작성자</th>
+                        <th>내용</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="comment : ${comments}">
+                        <td th:text="${comment.cUserId}"></td>
+                        <td th:text="${comment.cContent}"></td>
+                        <td>
+                            <a th:href="@{/bUpdate/{id}(id=${comment.cId})}" class="btn btn-primary btn-sm">Edit</a>
+                            <a th:href="@{/comments/{id}/delete(id=${comment.cId})}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
 
 </div>
 

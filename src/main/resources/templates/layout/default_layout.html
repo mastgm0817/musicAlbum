@@ -14,25 +14,23 @@
 </head>
 
 <body>
-<!-- header fragment 사용 -->
-<th:block th:replace="fragment/header :: headerFragment"></th:block>
+    <!-- header fragment 사용 -->
+    <th:block th:replace="fragment/header :: headerFragment"></th:block>
 
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-3 profile_container"><!--        nav fragment 사용-->
-            <div sec:authorize="isAuthenticated()">
-                <th:block layout:fragment="profile"></th:block>
+    <div class="wrapper">
+        <div class="container_wrapper">
+            <div class="row content_row">
+                <div class="col-12 content_container"> <!--        content fragment 사용-->
+                    <th:block layout:fragment="content"></th:block>
+                </div>
             </div>
         </div>
-        <div class="col-9 content_container"> <!--        content fragment 사용-->
-            <th:block layout:fragment="content"></th:block>
-        </div>
     </div>
-</div>
 
-<!-- footer fragment 사용 -->
-<th:block th:replace="fragment/footer :: footerFragment"> </th:block>
+    <!-- footer fragment 사용 -->
+    <th:block th:replace="fragment/footer :: footerFragment"> </th:block>
+
 </body>
 
 </html>

@@ -18,26 +18,18 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 @EnableWebSecurity // 웹 설정
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //    @Autowired
-//    private PasswordEncoder passwordEncoder;
     @Bean // 스프링 등록
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // 해싱 (특정한 문구 -> 대응되는 문자열)
         // 로그인 기능 구현했습니다 -> Spring Security -> Bcrypt 해싱 -> Bcrypt (???)
     } // 순환 참조 2 : passwordEncoder를 다른 곳으로 옮기던가...
 
-    // The dependencies of some of the beans in the application context form a cycle
-    // 순환 참조
-    // SecurityConfig -> LoginService
-    // LoginService -> passwordEncoder(SecurityConfig)
-//    @Autowired
-//    private LoginService loginService;
     @Autowired // Service 대신에 Repository를 써서 순환 참조 방지
     private AccountRepository accountRepository;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**", "/js/**","/error","/favicon.ico");
+        web.ignoring().antMatchers("/css/**", "/js/**","/error","/favicon.ico","/imgs/**");
     }
 
     @Override
@@ -73,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/login").permitAll() // 로그인 페이지는 모든 사용자에게 허용
                 .antMatchers("/join").permitAll() // 가입 페이지는 모든 사용자에게 허용
+                .antMatchers("/index").permitAll() // 가입 페이지는 모든 사용자에게 허용
 //                .antMatchers("/bList").permitAll() // 가입 페이지는 모든 사용자에게 허용
                 .antMatchers("/normal").hasAnyRole("normal", "admin") // 이것들 중에 특정한 권한이 있다면 접속 허용
                 .antMatchers("/main").hasAnyRole("normal", "admin") // 이것들 중에 특정한 권한이 있다면 접속 허용

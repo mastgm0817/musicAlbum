@@ -1,0 +1,29 @@
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
+
+<!--headerFragment 선언-->
+<div th:fragment="bannerFragment">
+<!--    헤더에 사용할 부분-->
+    <div class="image-container">
+        <div class="container-fluid">
+            <div class="row custom-row1">
+                <h1 class="banner_word">"In the realm of music,</h1>
+                <div class="col-md-8 offset-md-1">
+                    <h1 class="white-text">We are <span style="color:pink">SoundSoulmates</span>."</h1>
+                </div>
+            </div>
+            <div class="row custom-row">
+                <div class="col-md-8 offset-md-2">
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2 custom-input" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-light" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

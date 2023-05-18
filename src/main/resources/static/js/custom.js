@@ -1,4 +1,5 @@
 // custom.js
+/*
 function changeBackgroundColor(element) {
     element.style.backgroundColor = '#cfe2ff';
 }
@@ -20,3 +21,4 @@ document.addEventListener('DOMContentLoaded', function() {
         row.addEventListener('mouseout', () => restoreBackgroundColor(row));
     });
 });
+*/

@@ -3,65 +3,80 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/main_layout}">
-<head>
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
 
-        th {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
-
-        td {
-            border: 1px solid black;
-            padding: 10px;
-            text-align: center;
-        }
-    </style>
-</head>
 <div layout:fragment="content">
-    <h1>게시판</h1>
-    <table>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>사진</th>
-            <th>소리</th>
-            <th>작성일</th>
-            <th>기능</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="board : ${boards}">
-            <td th:text="${board.id}"></td>
-            <td>
-<!--                <a th:href="@{/__${board.Id}__/delete}">Delete</a>-->
-                <a th:text="${board.bTitle}" th:href="@{/bDetail/__${board.id}__}">
-                    <span th:text="${board.bTitle}"></span>
-                </a>
-            </td>
-            <td>
-                <img th:if="${board.bImage != null}" th:src="@{'/upload/' + ${board.bImage}}" class="img-fluid" alt="" width="50px">
-                <span th:if="${board.bImage == null}">-</span>
-            </td>
-            <td>
-                <audio th:if="${board.bSound != null}" th:src="@{'/upload/' + ${board.bSound}}" controls></audio>
-                <span th:if="${board.bSound == null}">-</span>
-            </td>
-            <td th:text="${board.createdAt}"></td>
-            <td>
-                <a th:href="@{/bUpdate/{id}(id=${board.id})}" class="btn btn-primary btn-sm">Edit</a>
-                <a th:href="@{/delete/{id}(id=${board.id})}" class="btn btn-danger btn-sm">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <button type="button" onclick="location.href='/bAdd'">글 작성</button>
-    <p th:text="${msg}"></p>
+        <h1 class="mb-4">게시판</h1>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th>번호</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>사진</th>
+                    <th>소리</th>
+                    <th>작성일</th>
+                    <th>기능</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${boards}">
+                    <td th:text="${board.BId}"></td>
+                    <td th:text="${board.bUserID}"></td>
+                    <td>
+                        <a th:href="@{/bDetail/{id}(id=${board.BId})}">
+                            <span th:text="${board.bTitle}"></span>
+                        </a>
+                    </td>
+                    <td>
+                        <img th:if="${board.bImage != null}" th:src="@{'/upload/' + ${board.bImage}}" class="img-fluid" alt="" width="50px">
+                        <span th:if="${board.bImage == null}">-</span>
+                    </td>
+                    <td>
+                        <audio th:if="${board.bSound != null}" th:src="@{'/upload/' + ${board.bSound}}" controls></audio>
+                        <span th:if="${board.bSound == null}">-</span>
+                    </td>
+                    <td th:text="${board.createdAt}"></td>
+                    <td>
+                        <a th:href="@{/bUpdate/{id}(id=${board.BId})}" class="btn btn-primary btn-sm">Edit</a>
+                        <a th:href="@{/delete/{id}(id=${board.BId})}" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                    <a th:if="${currentPage != 1}" th:href="@{/bList(page=1)}" class="page-link">&laquo;</a>
+                    <span th:if="${currentPage == 1}" class="page-link">&laquo;</span>
+                </li>
+                <li th:class="${currentPage == 1} ? 'page-item disabled' : 'page-item'">
+                    <a th:if="${currentPage != 1}" th:href="@{/bList(page=${currentPage - 1})}" class="page-link">&lsaquo;</a>
+                    <span th:if="${currentPage == 1}" class="page-link">&lsaquo;</span>
+                </li>
+                <li th:each="pageNumber : ${#numbers.sequence(1, totalPages)}" th:class="${pageNumber == currentPage} ? 'page-item active' : 'page-item'">
+                    <a th:if="${pageNumber != currentPage}" th:href="@{/bList(page=${pageNumber})}" class="page-link" th:text="${pageNumber}"></a>
+                    <span th:if="${pageNumber == currentPage}" class="page-link" th:text="${pageNumber}"></span>
+                </li>
+                <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                    <a th:if="${currentPage != totalPages}" th:href="@{/bList(page=${currentPage + 1})}" class="page-link">&rsaquo;</a>
+                    <span th:if="${currentPage == totalPages}" class="page-link">&rsaquo;</span>
+                </li>
+                <li th:class="${currentPage == totalPages} ? 'page-item disabled' : 'page-item'">
+                    <a th:if="${currentPage != totalPages}" th:href="@{/bList(page=${totalPages})}" class="page-link">&raquo;</a>
+                    <span th:if="${currentPage == totalPages}" class="page-link">&raquo;</span>
+                </li>
+            </ul>
+        </nav>
+
+
+        <div class="d-flex justify-content-end">
+            <button type="button" onclick="location.href='/bAdd'" class="btn btn-primary">글 작성</button>
+        </div>
+
+        <h2 th:text="${msg}"></h2>
 </div>
+
 </html>

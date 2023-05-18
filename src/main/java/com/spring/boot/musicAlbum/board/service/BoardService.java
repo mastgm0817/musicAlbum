@@ -4,6 +4,8 @@ import com.spring.boot.musicAlbum.board.model.BoardDTO;
 import com.spring.boot.musicAlbum.board.repository.BoardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
@@ -29,9 +31,10 @@ public class BoardService {
         return boardRepository.findById(id).orElse(null);
     }
 
-    public List<BoardDTO> getAllBoards() {
-        return boardRepository.findAll();
+    public Page<BoardDTO> getAllBoards(Pageable pageable) {
+        return boardRepository.findAll(pageable);
     }
+
 
 
 //    @Value("${upload.path}")
@@ -76,7 +79,7 @@ public class BoardService {
                                 MultipartFile imageFile,
                                 MultipartFile soundFile) throws IOException {
         String bucketName = "project-file";
-        BoardDTO existedBoard = getBoardById(newBoard.getId());
+        BoardDTO existedBoard = getBoardById(newBoard.getBId());
         if (existedBoard == null) {
             throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
         }

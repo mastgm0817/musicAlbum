@@ -6,9 +6,6 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>앨범</title>
-
     <!-- config fragment 사용 -->
     <th:block th:replace="fragment/config :: configFragment" ></th:block>
 </head>
@@ -16,12 +13,14 @@
 <body>
 <!-- header fragment 사용 -->
 <th:block th:replace="fragment/header :: headerFragment"></th:block>
+<th:block th:replace="fragment/banner :: bannerFragment"></th:block>
 
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 content_container"> <!--        content fragment 사용-->
-            <th:block layout:fragment="content"></th:block>
+<div class="wrapper">
+    <div class="container_wrapper">
+        <div class="row content_row">
+            <div class="col-12 content_container"> <!--        content fragment 사용-->
+                <th:block layout:fragment="content"></th:block>
+            </div>
         </div>
     </div>
 </div>
