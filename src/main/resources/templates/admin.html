@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default_layout}">
+
+</div>
+<div layout:fragment="content">
+    <div class="container-fluid">
+        <h3 th:text="${#authentication.principal.username}"></h3>
+        <div th:with="role = ${#authentication.authorities.![authority].get(0)}">
+            <!--        <div th:if="${role == 'ROLE_normal'}">-->
+            <!--            <p>일반 회원입니다!</p>-->
+            <!--            <button type="button" onclick="location.href = '/normal'">Basic</button>-->
+            <!--        </div>-->
+            <div th:if="${role == 'ROLE_admin'}">
+                <p>관리자 페이지 예입니다!</p>
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Working on it...</span>
+                </div>
+            </div>
+        </div>
+        <br>
+        <button onclick="location.href='/home'">홈으로</button>
+    <!--  여기에다가 추가하면 됨 -->
+<!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
+    </div>
+</div>
+
+</html>

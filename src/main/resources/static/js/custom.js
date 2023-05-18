@@ -1,24 +1,16 @@
-// custom.js
-/*
-function changeBackgroundColor(element) {
-    element.style.backgroundColor = '#cfe2ff';
-}
+const exampleModal = document.getElementById('exampleModal')
+exampleModal.addEventListener('show.bs.modal', event => {
+  // Button that triggered the modal
+  const button = event.relatedTarget
+  // Extract info from data-bs-* attributes
+  const recipient = button.getAttribute('data-bs-whatever')
+  // If necessary, you could initiate an AJAX request here
+  // and then do the updating in a callback.
+  //
+  // Update the modal's content.
+  const modalTitle = exampleModal.querySelector('.modal-title')
+  const modalBodyInput = exampleModal.querySelector('.modal-body input')
 
-function restoreBackgroundColor(element) {
-    element.style.backgroundColor = 'transparent';
-}
-
-function redirectToDetail(id) {
-    window.location.href = '/detail/' + id;
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const rows = document.querySelectorAll('tbody tr');
-    rows.forEach(row => {
-        const id = row.querySelector('td:first-child').innerText;
-        row.addEventListener('click', () => redirectToDetail(id));
-        row.addEventListener('mouseover', () => changeBackgroundColor(row));
-        row.addEventListener('mouseout', () => restoreBackgroundColor(row));
-    });
-});
-*/
+  modalTitle.textContent = `New message to ${recipient}`
+  modalBodyInput.value = recipient
+})

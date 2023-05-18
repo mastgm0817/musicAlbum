@@ -69,5 +69,26 @@ public class AccountService {
         return accountRepository.findAccountById(id);
     }
 
+    public Account updateAccount(Account account) {
+        return accountRepository.save(account);
+    }
 
+    public void updateProfile(Account account, MultipartFile imageFile) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageName = saveImageToS3(imageFile);
+            account.setImage(imageName);
+        }
+        accountRepository.save(account);
+    }
+
+    private String saveImageToS3(MultipartFile imageFile) throws IOException {
+        String bucketName = "project-profile-image";
+        String fileName = System.currentTimeMillis() + "-" + imageFile.getOriginalFilename();
+        PutObjectRequest request = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(fileName)
+                .build();
+        s3Client.putObject(request, RequestBody.fromBytes(imageFile.getBytes()));
+        return fileName;
+    }
 }

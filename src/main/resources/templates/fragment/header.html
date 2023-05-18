@@ -27,6 +27,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/join">회원가입</a>
                     </li>
+                    <div sec:authorize="hasRole('ROLE_admin')">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin_board">관리자 페이지(예정)</a>
+                        </li>
+                    </div>
                 </ul>
             </div>
             <div sec:authorize="isAuthenticated()">

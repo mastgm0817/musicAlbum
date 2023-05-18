@@ -73,10 +73,51 @@
                     <tbody>
                     <tr th:each="comment : ${comments}">
                         <td th:text="${comment.cUserId}"></td>
-                        <td th:text="${comment.cContent}"></td>
+                        <td th:text="${comment.cContent}">
+                        </td>
                         <td>
-                            <a th:href="@{/bUpdate/{id}(id=${comment.cId})}" class="btn btn-primary btn-sm">Edit</a>
-                            <a th:href="@{/comments/{id}/delete(id=${comment.cId})}" class="btn btn-danger btn-sm">Delete</a>
+                            <div class="container">
+                                <div>
+                                    <!-- 버튼 -->
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                        수정
+                                    </button>
+                                    <a th:href="@{/comments/{id}/delete(id=${comment.cId})}" class="btn btn-danger">Delete</a>
+                                </div>
+
+                                <!-- 모달 -->
+                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="myModalLabel">댓글 수정</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- 입력 폼 등 모달 내용 -->
+                                                <form th:object="${comment}" th:action="@{/Update/{id}/comments(id=${comment.cId})}" method="post">
+                                                    <div class="form-group">
+                                                        <input type="hidden" name="BId" th:value="${board.BId}">
+                                                        <label for="cContent">수정내용</label>
+                                                        <input type="text" id="cContent" name="cContent" th:field="*{cContent}" class="form-control" placeholder="댓글을 입력하세요" />
+                                                    </div>
+                                                    <div class="row">
+                                                        <div>
+                                                            <button type="submit" class="btn btn-primary">수정하기</button>
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--                                <form th:object="${comment}" th:action="@{/Update/{id}/comments(id=${cId})}" method="post">-->
+                            </div>
                         </td>
                     </tr>
                     </tbody>
@@ -84,12 +125,9 @@
             </div>
         </div>
     </div>
-
 </div>
 
 
-
-
 </div>
-
 </html>
+<script src="/js/custom.js"></script>

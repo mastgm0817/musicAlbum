@@ -121,3 +121,22 @@ html, body {
 .white-text {
   color: white;
 }
+
+
+.input-form {
+    display: none;
+}
+
+.img_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-overlay {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

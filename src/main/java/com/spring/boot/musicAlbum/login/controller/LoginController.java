@@ -109,4 +109,29 @@ public class LoginController {
         return new ResponseEntity<>(byteArray, HttpStatus.OK);
     }
 
+    @GetMapping("/profile/edit")
+    public String getAccountById(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            String username = authentication.getName();
+            Account account = accountService.findUserByUsername(username);
+            model.addAttribute("account", account);
+            return "accountDetail"; // view name
+        }
+        return "redirect:/home";
+    }
+
+    @PostMapping("/profile/edit")
+    public String updateProfile(@ModelAttribute("account") Account account,
+                                @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+        accountService.updateProfile(account,imageFile);
+
+
+
+        return "redirect:/home";
+    }
+    @GetMapping("/admin_board")
+    public String adminBoardPage() {
+        return "admin";
+    }
 }

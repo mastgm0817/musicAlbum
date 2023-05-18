@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import software.amazon.awssdk.core.sync.RequestBody;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class CommentController {
@@ -56,5 +57,13 @@ public class CommentController {
             board_id = commentService.deleteComment(id,username);
         }
         return "redirect:/bDetail/" + board_id;
+    }
+    @PostMapping("/Update/{id}/comments")
+    public String updateComment(@PathVariable("id") Long id,
+                                @RequestParam("BId") Long BId,
+                                @ModelAttribute("comment") Comment updatedComment) {
+        commentService.updateComment(id,updatedComment);
+
+        return "redirect:/bDetail/" + BId;
     }
 }

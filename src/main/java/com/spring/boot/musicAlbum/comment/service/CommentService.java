@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -24,6 +25,7 @@ public class CommentService {
         List<Comment> comments = commentRepository.findByBoardDTOBId(boardId);
         return comments;
     }
+
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
@@ -48,4 +50,27 @@ public class CommentService {
         commentRepository.delete(comment);
         return board_id;
     }
+
+    public Comment updateComment(Long commentId, Comment updatedContent) {
+        // Retrieve the existing comment with the given commentId from the database
+        Comment existingComment = commentRepository.findById(commentId).orElse(null);
+
+        // Check if the comment exists
+        if (existingComment != null) {
+            // Apply the updated content to the existing comment
+            existingComment.setCContent(updatedContent.getCContent());
+
+            // Perform any additional modifications if necessary
+
+            // Save the updated comment back to the database
+            Comment savedComment = commentRepository.save(existingComment);
+
+            // Return the updated comment
+            return savedComment;
+        }
+
+        // Return null if the comment does not exist
+        return null;
+    }
 }
+
