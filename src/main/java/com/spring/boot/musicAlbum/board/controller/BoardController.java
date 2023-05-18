@@ -90,7 +90,7 @@ public class BoardController {
     }
 
     @GetMapping("/bUpdate/{id}")
-    public String updateBoard(@PathVariable(value="id") Long id, Model model) {
+    public String updateBoard(@PathVariable Long id, Model model) {
         BoardDTO board = boardService.getBoardById(id);
         if (board == null) {
             return "redirect:/";

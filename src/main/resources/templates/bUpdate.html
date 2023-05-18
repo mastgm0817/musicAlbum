@@ -10,7 +10,7 @@
     <!--  head, body 등등 사용할 필요없음, 부트스트랩, css 링크 되어있음-->
     <h2>Edit the board</h2>
     <form th:object="${board}" th:action="@{/edit}" method="POST" enctype="multipart/form-data">
-        <input type="hidden" name="id" th:value="${board.id}">
+        <input type="hidden" name="BId" th:value="${board.BId}">
         <div>
             <label for="bTitle">Title:</label>
             <input type="text" id="bTitle" name="bTitle" th:value="${board.bTitle}">
