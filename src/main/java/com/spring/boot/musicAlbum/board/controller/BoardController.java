@@ -4,6 +4,7 @@ import com.spring.boot.musicAlbum.board.model.BoardDTO;
 import com.spring.boot.musicAlbum.board.service.BoardService;
 import com.spring.boot.musicAlbum.comment.model.Comment;
 import com.spring.boot.musicAlbum.comment.service.CommentService;
+import com.spring.boot.musicAlbum.exception.WrongBoardExceptionHandler;
 import com.spring.boot.musicAlbum.login.model.Account;
 import com.spring.boot.musicAlbum.login.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,8 +112,15 @@ public class BoardController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteBoard(@PathVariable Long id) {
+    public String deleteBoard(@PathVariable Long id) throws WrongBoardExceptionHandler {
         // 게시글 삭제 전에 파일도 함께 삭제
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long board_id = 0L;
+        if (authentication != null) {
+            String username = authentication.getName();
+            boardService.deleteBoard(id,username);
+        }
+
         BoardDTO board = boardService.getBoardById(id);
         if (board != null) {
             // R2에서 파일 삭제
@@ -125,7 +133,6 @@ public class BoardController {
             }
         }
         // 게시글 삭제
-        boardService.deleteBoard(id);
         return "redirect:/bList";
     }
 

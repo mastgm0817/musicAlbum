@@ -2,6 +2,9 @@ package com.spring.boot.musicAlbum.board.service;
 
 import com.spring.boot.musicAlbum.board.model.BoardDTO;
 import com.spring.boot.musicAlbum.board.repository.BoardRepository;
+import com.spring.boot.musicAlbum.comment.model.Comment;
+import com.spring.boot.musicAlbum.exception.WrongBoardExceptionHandler;
+import com.spring.boot.musicAlbum.exception.WrongUserExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -14,6 +17,7 @@ import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
+import javax.persistence.EntityNotFoundException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -123,9 +127,17 @@ public class BoardService {
         boardRepository.save(existedBoard);
     }
 
-    public void deleteBoard(Long id) {
+    public void deleteBoard(Long id, String username) throws WrongBoardExceptionHandler {
+        BoardDTO board = boardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID에 해당하는 게시글을 찾을 수 없습니다: " + id));
+
+        if (!board.getBUserID().equals(username)) {
+            throw new WrongBoardExceptionHandler("당신이 작성한 게시물이 아닙니다.");
+        }
         boardRepository.deleteById(id);
     }
+
+
 
     public byte[] loadFile(String key) throws IOException {
         String bucketName = "project-file";
