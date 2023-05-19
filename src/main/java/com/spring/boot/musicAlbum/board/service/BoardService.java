@@ -127,9 +127,16 @@ public class BoardService {
         boardRepository.save(existedBoard);
     }
 
+    public void deleteBoard(Long id) throws WrongBoardExceptionHandler {
+        BoardDTO board = boardRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID에 해당하는 게시글을 찾을 수 없습니다: " + id));
+        boardRepository.deleteById(id);
+    }
+
     public void deleteBoard(Long id, String username) throws WrongBoardExceptionHandler {
         BoardDTO board = boardRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID에 해당하는 게시글을 찾을 수 없습니다: " + id));
+
 
         if (!board.getBUserID().equals(username)) {
             throw new WrongBoardExceptionHandler("당신이 작성한 게시물이 아닙니다.");

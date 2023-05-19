@@ -5,6 +5,8 @@ import com.spring.boot.musicAlbum.board.service.BoardService;
 import com.spring.boot.musicAlbum.comment.model.Comment;
 import com.spring.boot.musicAlbum.comment.service.CommentService;
 import com.spring.boot.musicAlbum.exception.WrongUserExceptionHandler;
+import com.spring.boot.musicAlbum.login.model.Account;
+import com.spring.boot.musicAlbum.login.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import java.util.Optional;
 public class CommentController {
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private AccountService accountService;
 
     @Autowired
     private BoardService boardService;
@@ -54,8 +58,16 @@ public class CommentController {
         Long board_id = 0L;
         if (authentication != null) {
             String username = authentication.getName();
-            board_id = commentService.deleteComment(id,username);
+            Account account = accountService.findUserByUsername(username);
+            if(account.getRole().equals("admin")){
+                board_id = commentService.deleteComment(id);
+            }
+            else{
+                board_id = commentService.deleteComment(id,username);
+            }
+
         }
+
         return "redirect:/bDetail/" + board_id;
     }
     @PostMapping("/Update/{id}/comments")

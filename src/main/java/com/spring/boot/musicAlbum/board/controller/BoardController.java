@@ -118,21 +118,29 @@ public class BoardController {
         Long board_id = 0L;
         if (authentication != null) {
             String username = authentication.getName();
-            boardService.deleteBoard(id,username);
-        }
-
-        BoardDTO board = boardService.getBoardById(id);
-        if (board != null) {
-            // R2에서 파일 삭제
-            if (board.getBImage() != null) {
-                boardService.deleteFileFromR2(board.getBImage());
+            Account account = accountService.findUserByUsername(username);
+            if(account.getRole().equals("admin")){
+                boardService.deleteBoard(id);
+            }
+            else{
+                boardService.deleteBoard(id,username);
             }
 
-            if (board.getBSound() != null) {
-                boardService.deleteFileFromR2(board.getBSound());
+            BoardDTO board = boardService.getBoardById(id);
+            if (board != null) {
+                // R2에서 파일 삭제
+                if (board.getBImage() != null) {
+                    boardService.deleteFileFromR2(board.getBImage());
+                }
+
+                if (board.getBSound() != null) {
+                    boardService.deleteFileFromR2(board.getBSound());
+                }
             }
+            // 게시글 삭제
         }
-        // 게시글 삭제
+
+
         return "redirect:/bList";
     }
 
@@ -141,4 +149,6 @@ public class BoardController {
         byte[] byteArray = boardService.loadFile(filename);
         return new ResponseEntity<>(byteArray, HttpStatus.OK);
     }
+
+
 }

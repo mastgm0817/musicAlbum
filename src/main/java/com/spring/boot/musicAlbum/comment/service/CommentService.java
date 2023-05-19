@@ -39,6 +39,14 @@ public class CommentService {
         return commentRepository.save(comment);
     }
 
+    public Long deleteComment(Long commentId) throws WrongUserExceptionHandler {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 ID에 해당하는 댓글을 찾을 수 없습니다: " + commentId));
+        Long board_id = comment.getBoardDTO().getBId();
+
+        commentRepository.delete(comment);
+        return board_id;
+    }
     public Long deleteComment(Long commentId, String cUserId) throws WrongUserExceptionHandler {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID에 해당하는 댓글을 찾을 수 없습니다: " + commentId));
@@ -72,5 +80,11 @@ public class CommentService {
         // Return null if the comment does not exist
         return null;
     }
+
+//    public boolean checkUsername(Long commentId, String username){
+//        Comment existingComment = commentRepository.findById(commentId).orElse(null);
+//        boolean result = existingComment.getCUserId().equals(username);
+//        return result;
+//    }
 }
 
