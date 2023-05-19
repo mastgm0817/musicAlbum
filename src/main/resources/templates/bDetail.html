@@ -79,14 +79,14 @@
                             <div class="container">
                                 <div>
                                     <!-- 버튼 -->
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#myModal' + ${comment.cId}">
                                         수정
                                     </button>
                                     <a th:href="@{/comments/{id}/delete(id=${comment.cId})}" class="btn btn-danger">Delete</a>
                                 </div>
 
                                 <!-- 모달 -->
-                                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal fade" th:id="'myModal' + ${comment.cId}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -100,6 +100,7 @@
                                                 <form th:object="${comment}" th:action="@{/Update/{id}/comments(id=${comment.cId})}" method="post">
                                                     <div class="form-group">
                                                         <input type="hidden" name="BId" th:value="${board.BId}">
+                                                        <input type="hidden" name="cId" th:value="${comment.cId}">
                                                         <label for="cContent">수정내용</label>
                                                         <input type="text" id="cContent" name="cContent" th:field="*{cContent}" class="form-control" placeholder="댓글을 입력하세요" />
                                                     </div>

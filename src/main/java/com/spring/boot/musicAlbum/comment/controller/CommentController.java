@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import software.amazon.awssdk.core.sync.RequestBody;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,12 +74,14 @@ public class CommentController {
     @PostMapping("/Update/{id}/comments")
     public String updateComment(@PathVariable("id") Long id,
                                 @RequestParam("BId") Long BId,
-                                @ModelAttribute("comment") Comment updatedComment) throws WrongUserExceptionHandler {
+                                @RequestParam("cId") Long cId,
+                                @ModelAttribute("comment") Comment updatedComment) throws IOException, WrongUserExceptionHandler {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
             String username = authentication.getName();
-            commentService.updateComment(id,updatedComment, username);
+            System.out.println("cId = " + cId);
+            commentService.updateComment(cId, updatedComment, username);
         }
 
         return "redirect:/bDetail/" + BId;

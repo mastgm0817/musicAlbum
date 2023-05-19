@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,9 @@ public class CommentService {
         return comments;
     }
 
-
+    public Comment findCommentByCID(Long id){
+        return commentRepository.findCommentBycId(id);
+    }
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }
@@ -59,29 +62,30 @@ public class CommentService {
         return board_id;
     }
 
-    public Comment updateComment(Long commentId, Comment updatedContent, String username) throws WrongUserExceptionHandler {
+    public void updateComment(Long commentId, Comment updatedComment, String username) throws IOException, WrongUserExceptionHandler {
         // Retrieve the existing comment with the given commentId from the database
-        Comment existingComment = commentRepository.findById(commentId).orElse(null);
-
-        if(!existingComment.getCUserId().equals(username)){
-            throw new WrongUserExceptionHandler("당신이 작성한 코멘트가 아닙니다.");
-        }
+        System.out.println("commentId = " + commentId);
+        Comment existingComment = findCommentByCID(commentId);
         // Check if the comment exists
         if (existingComment != null) {
+            String existUsername = existingComment.getCUserId();
+            System.out.println("existUsername = " + existUsername);
+            System.out.println("username = " + username);;
+
+            if(!existUsername.equals(username)){
+                throw new WrongUserExceptionHandler("당신이 작성한 코멘트가 아닙니다.");
+            }
             // Apply the updated content to the existing comment
-            existingComment.setCContent(updatedContent.getCContent());
+            existingComment.setCContent(updatedComment.getCContent());
 
             // Perform any additional modifications if necessary
 
             // Save the updated comment back to the database
-            Comment savedComment = commentRepository.save(existingComment);
+            commentRepository.save(existingComment);
 
             // Return the updated comment
-            return savedComment;
         }
 
-        // Return null if the comment does not exist
-        return null;
     }
 
 //    public boolean checkUsername(Long commentId, String username){
