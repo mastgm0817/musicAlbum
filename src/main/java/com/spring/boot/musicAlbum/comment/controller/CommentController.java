@@ -73,8 +73,13 @@ public class CommentController {
     @PostMapping("/Update/{id}/comments")
     public String updateComment(@PathVariable("id") Long id,
                                 @RequestParam("BId") Long BId,
-                                @ModelAttribute("comment") Comment updatedComment) {
-        commentService.updateComment(id,updatedComment);
+                                @ModelAttribute("comment") Comment updatedComment) throws WrongUserExceptionHandler {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null) {
+            String username = authentication.getName();
+            commentService.updateComment(id,updatedComment, username);
+        }
 
         return "redirect:/bDetail/" + BId;
     }

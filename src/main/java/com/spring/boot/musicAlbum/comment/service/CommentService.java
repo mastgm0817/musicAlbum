@@ -59,10 +59,13 @@ public class CommentService {
         return board_id;
     }
 
-    public Comment updateComment(Long commentId, Comment updatedContent) {
+    public Comment updateComment(Long commentId, Comment updatedContent, String username) throws WrongUserExceptionHandler {
         // Retrieve the existing comment with the given commentId from the database
         Comment existingComment = commentRepository.findById(commentId).orElse(null);
 
+        if(!existingComment.getCUserId().equals(username)){
+            throw new WrongUserExceptionHandler("당신이 작성한 코멘트가 아닙니다.");
+        }
         // Check if the comment exists
         if (existingComment != null) {
             // Apply the updated content to the existing comment

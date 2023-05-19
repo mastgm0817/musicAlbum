@@ -5,6 +5,7 @@ import com.spring.boot.musicAlbum.board.repository.BoardRepository;
 import com.spring.boot.musicAlbum.comment.model.Comment;
 import com.spring.boot.musicAlbum.exception.WrongBoardExceptionHandler;
 import com.spring.boot.musicAlbum.exception.WrongUserExceptionHandler;
+import com.spring.boot.musicAlbum.login.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -27,7 +28,8 @@ public class BoardService {
 
     @Autowired
     private BoardRepository boardRepository;
-
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private S3Client s3Client; // @Bean
 
@@ -80,10 +82,15 @@ public class BoardService {
     }
 
     public void updateBoard(BoardDTO newBoard,
+                                String username,
                                 MultipartFile imageFile,
-                                MultipartFile soundFile) throws IOException {
+                                MultipartFile soundFile) throws IOException, WrongUserExceptionHandler {
         String bucketName = "project-file";
         BoardDTO existedBoard = getBoardById(newBoard.getBId());
+        if(!existedBoard.getBUserID().equals(username)){
+            throw new WrongUserExceptionHandler("당신이 작성한 게시글이 아닙니다.");
+        }
+
         if (existedBoard == null) {
             throw new IllegalArgumentException("게시글이 존재하지 않습니다.");
         }

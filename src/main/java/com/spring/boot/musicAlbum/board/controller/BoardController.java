@@ -5,6 +5,7 @@ import com.spring.boot.musicAlbum.board.service.BoardService;
 import com.spring.boot.musicAlbum.comment.model.Comment;
 import com.spring.boot.musicAlbum.comment.service.CommentService;
 import com.spring.boot.musicAlbum.exception.WrongBoardExceptionHandler;
+import com.spring.boot.musicAlbum.exception.WrongUserExceptionHandler;
 import com.spring.boot.musicAlbum.login.model.Account;
 import com.spring.boot.musicAlbum.login.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,9 +105,13 @@ public class BoardController {
     public String UpdateBoard(@ModelAttribute("board") BoardDTO newBoard,
                               @RequestParam("imageFile") MultipartFile imageFile,
                               @RequestParam("soundFile") MultipartFile soundFile,
-                              RedirectAttributes redirectAttributes) throws IOException {
-        boardService.updateBoard(newBoard,imageFile,soundFile);
-        redirectAttributes.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+                              RedirectAttributes redirectAttributes) throws IOException, WrongUserExceptionHandler {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            String username = authentication.getName();
+            boardService.updateBoard(newBoard,username, imageFile,soundFile);
+            redirectAttributes.addFlashAttribute("msg", "정상적으로 수정되었습니다.");
+        }
         return "redirect:/bList";
     }
 
